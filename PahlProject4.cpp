@@ -67,7 +67,7 @@ int main()
     int btDistance = backtrackingMazeSolver(x,y);     //brute force? dnc?
     int gDistance = greedyMazeSolver(x,y);
     int dncDistance = divideAndConquerMazeSolver(x,y);
-    int dpDistance = dynamicProgrammingMazeSolverZZ(x,y);
+    int dpDistance = dynamicProgrammingMazeSolver(x,y);
     int rDistance = randomizedMazeSolver(x,y);
     
     cout << "Brute force distance: " << bfDistance << " units away!" << endl;
