@@ -15,17 +15,17 @@ int randomizedMazeSolver(int i, int j);
 
 struct maze
 {
-	int rows;
-	int cols;
-	char matrix [100][100];
+  int rows;
+  int cols;
+  char matrix [100][100];
 };
 
 maze myMaze;
 
 int main()
 {
-  srand(time(NULL));
   //seed random number generator
+  srand(time(NULL));
   
   //required variables
   ifstream in;
@@ -67,7 +67,8 @@ int main()
       }
   
   //Call a recursive mazeSolver
-  
+
+  //store temp maze for next algorithm
   maze temp = myMaze;
   
   int bfDistance = bruteForceMazeSolver(x,y);     //brute force? dnc?
@@ -83,6 +84,7 @@ int main()
     }
   
   
+  //get uncomplete maze
   myMaze=temp;
   int rDistance = randomizedMazeSolver(x,y);
   cout << "Randomized distance: " << rDistance << " units away!" << endl;
@@ -102,14 +104,19 @@ int bruteForceMazeSolver(int i, int j)
 {
   int ret;
   
+  //return 0 if F is found
   if(myMaze.matrix[i-1][j]=='F'||myMaze.matrix[i+1][j]=='F'||
      myMaze.matrix[i][j-1]=='F'||myMaze.matrix[i][j+1]=='F'){
     return 0;
   }
 
+  //move through all open spaces with an opening
   if(myMaze.matrix[i-1][j]==' '){
+    //place a . when visited
     myMaze.matrix[i-1][j]='.';
+    //move to space
     ret = bruteForceMazeSolver(i-1, j);
+    //if the space has more spaces to travel add to the return
     if(ret != -1){
       return 1 + ret;
     }
@@ -136,6 +143,7 @@ int bruteForceMazeSolver(int i, int j)
     }
   }
 
+  //return -1 when there are no open spaces
   return -1;
 }
 int backtrackingMazeSolver(int i, int j)
@@ -161,16 +169,19 @@ int dynamicProgrammingMazeSolver(int i, int j)
 int randomizedMazeSolver(int i, int j)
 {
   int ret;
+  //find the direction to go
   int dir = rand() % 4;
 
+  //return 0 when F is found
   if(myMaze.matrix[i-1][j]=='F'||myMaze.matrix[i+1][j]=='F'||
      myMaze.matrix[i][j-1]=='F'||myMaze.matrix[i][j+1]=='F'){
     return 0;
   }
 
-  
+  //direction up to rand function
   switch(dir){
   case 0:
+    //process same as bruteForce
     if(myMaze.matrix[i-1][j]==' '){
       myMaze.matrix[i-1][j]='.';
       ret = randomizedMazeSolver(i-1, j);
@@ -211,11 +222,13 @@ int randomizedMazeSolver(int i, int j)
     break;
   }  
   
+  //if there are no open spaces go back to the last open space
   if(myMaze.matrix[i-1][j]!=' '&&myMaze.matrix[i+1][j]!=' '&&
      myMaze.matrix[i][j-1]!=' '&&myMaze.matrix[i][j+1]!=' '){
     return -1;
   }
   
+  //if there is still somewhere to go try again
   return randomizedMazeSolver(i, j);
 
 }
